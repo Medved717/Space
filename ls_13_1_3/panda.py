@@ -10,5 +10,28 @@
 # import pandas as pd
 #
 # df = pd.read_excel('winemag-data-130k-v2.xlsx')
-# df.set_index('title', drop=False, inplace=True)
-# print(df.iloc[0])
+#
+# italy_df = df.loc[df.country == 'Italy']
+# print(italy_df)
+
+
+# import pandas as pd
+#
+# df = pd.read_excel("winemag-data-130k-v2.xlsx")
+#
+# new_df = df.groupby('country')
+# print(new_df.price.mean())
+
+# import pandas as pd
+#
+# df = pd.read_excel('winemag-data-130k-v2.xlsx')
+#
+# df.sort_values(by='price', inplace=True, ascending=False)
+#
+# print(df.head().price)
+
+import pandas as pd
+
+df = read_excel('winemag-data-130k-v2.xlsx')
+
+new_df = df.groupby('county')
