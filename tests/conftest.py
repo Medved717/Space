@@ -1,5 +1,6 @@
 import pytest
 
+
 @pytest.fixture
 def titanic_df():
     sample_dict = {'PassengerId': [1, 2, 3, 4, 5],
