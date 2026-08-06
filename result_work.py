@@ -8,40 +8,17 @@ with open('customers_data.csv', newline='') as file:
     customers_data = [row for row in csv.reader(file) if 'customer_id' not in row]
 
 # Чтение employees_data (универсальный способ)
-with open('employees_data.csv', newline='') as file:
-    # Пробуем определить разделитель автоматически
-    sample = file.read(1024)
-    file.seek(0)
+with open('employees_data.csv') as file:
+    reader = csv.reader(file)
 
-    if '\t' in sample:
-        delimiter = '\t'
-    else:
-        delimiter = ','
+    headers = next(reader)
 
-    reader = csv.reader(file, delimiter=delimiter)
+    header_employees = ['employee_id', 'first_name', 'last_name', 'title', 'birth_date', 'notes']
+    employees_data = []
+    for employee_id, row in enumerate(reader, start=1):
 
-    # Читаем заголовки
-    try:
-        headers = next(reader)
-    except StopIteration:
-        headers = []
+        employees_data.append([str(employee_id)] + row)
 
-    # Проверяем, есть ли employee_id в заголовках
-    if 'employee_id' not in headers:
-        # Если нет - добавляем сами
-        header_employees = ['employee_id', 'first_name', 'last_name', 'title', 'birth_date', 'notes']
-        employees_data = []
-        for employee_id, row in enumerate(reader, start=1):
-            if row and any(row):
-                # Если в строке 5 элементов, добавляем ID
-                if len(row) == 5:
-                    employees_data.append([str(employee_id)] + row)
-                else:
-                    employees_data.append(row)
-    else:
-        # Если есть - используем как есть
-        header_employees = headers
-        employees_data = [row for row in reader]
 
 # Чтение orders_data
 with open('orders_data.csv', newline='') as file:
@@ -66,10 +43,22 @@ cur.execute("DROP TABLE IF EXISTS customers")
 cur.execute("DROP TABLE IF EXISTS employees")
 
 # Создание таблиц (исправлено: CHAR → VARCHAR)
-cur.execute(
-    'CREATE TABLE customers (customer_id CHAR(5) PRIMARY KEY, company_name VARCHAR(100) NOT NULL, contact_name VARCHAR(100) NOT NULL)')
-cur.execute(
-    'CREATE TABLE employees (employee_id INT PRIMARY KEY, first_name VARCHAR(25) NOT NULL, last_name VARCHAR(35) NOT NULL, title VARCHAR(100) NOT NULL, birth_date DATE NOT NULL, notes TEXT)')
+cur.execute('''
+CREATE TABLE customers 
+    (customer_id CHAR(5) PRIMARY KEY, 
+    company_name VARCHAR(100) NOT NULL, 
+    contact_name VARCHAR(100) NOT NULL)''')
+
+cur.execute('''
+CREATE TABLE employees 
+    (employee_id INT PRIMARY KEY, 
+    first_name VARCHAR(25) NOT NULL, 
+    last_name VARCHAR(35) NOT NULL, 
+    title VARCHAR(100) NOT NULL, 
+    birth_date DATE NOT NULL, 
+    notes TEXT)
+    ''')
+
 cur.execute('''
     CREATE TABLE orders (
         order_id INT NOT NULL,
@@ -111,6 +100,4 @@ res_orders = cur.fetchall()
 cur.close()
 conn.close()
 
-print(res_customers)
-print(res_employees)
-print(res_orders)
+
