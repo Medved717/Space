@@ -1,17 +1,39 @@
-import csv
+# import csv
+# import psycopg2
+#
+#
+# def fill_table_for_csv(table_name, file_name):
+#
+#     with psycopg2.connect(
+#         host='localhost',
+#         user='postgres',
+#         dbname='courses',
+#         password='515467',
+#         port='5432'
+#     ) as conn:
+#         with conn.cursor() as cur:
+#
+#
+#             with open(file_name, 'r', encoding='utf-8') as file:
+#                 rows = csv.reader(file)
+#                 headers = next(rows)
+#
+#                 for row in rows:
+#                     query = f'INSERT INTO {table_name} ({", ".join(headers)}) VALUES ({", ".join(["%s"] * len(row))})'
+#                     cur.execute(query, row)
+#
+#             conn.commit()
+#
+# def main():
+#     fill_table_for_csv('students', 'data/students.csv')
+#     fill_table_for_csv('instructors', 'data/instructors.csv')
+#     fill_table_for_csv('courses', 'data/courses.csv')
+#
+#
+# if __name__ == '__main__':
+#     main()
 
-books = [
-    {"title": "Мастер и Маргарита", "author": "Булгаков", "year": 1967, "rating": 4.8},
-    {"title": "Преступление и наказание", "author": "Достоевский", "year": 1866, "rating": 4.7},
-    {"title": "Война и мир", "author": "Толстой", "year": 1869, "rating": 4.6},
-    {"title": "Маленький принц", "author": "Экзюпери", "year": 1943, "rating": 4.5},
-]
+сur.execute(f'CREATE TABLE customers (customer_id CHAR(5) NOT NULL, company_name CHAR(100) NOT NULL, contact_name CHAR(100) NOT NULL))'
 
 
-
-with open('books.csv', 'w', newline='', encoding='UTF-8') as file:
-    fieldnames = ['title', 'author', 'year', 'rating']
-    write = csv.DictWriter(file, fieldnames=fieldnames)
-    write.writeheader()
-    write.writerows(books)
 
